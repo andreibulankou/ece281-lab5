@@ -68,7 +68,7 @@ begin
       
      --Flags
      o_flags(3) <= s_result(7); --N: negative
-     o_flags(2) <= '1' when s_result = "00000000" else '0'; --Z: zero
+     o_flags(2) <= '1' when unsigned(s_result) = "0" else '0'; --Z: zero
      o_flags(1) <= s_sum(8) when i_op = "000" else '0';
      o_flags(0) <= '0'; --V: overflow 
                    
