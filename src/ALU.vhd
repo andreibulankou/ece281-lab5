@@ -40,7 +40,7 @@ entity ALU is
 end ALU;
 
 architecture Behavioral of ALU is
-    signal s_result : STD_LOGIC_VECTOR(7 downto 0);
+    signal s_result : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
     signal s_sum: unsigned(8 downto 0);
 begin
     process(i_A, i_B, i_op) -- run process when these change
@@ -68,7 +68,7 @@ begin
       
      --Flags
      o_flags(3) <= s_result(7); --N: negative
-     o_flags(2) <= '1' when unsigned(s_result) = "0" else '0'; --Z: zero
+     o_flags(2) <= '1' when s_result = "00000000" else '0'; --Z: zero
      o_flags(1) <= s_sum(8) when i_op = "000" else '0';
      o_flags(0) <= '0'; --V: overflow 
                    
