@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -40,8 +40,36 @@ entity ALU is
 end ALU;
 
 architecture Behavioral of ALU is
-
+    signal s_result : STD_LOGIC_VECTOR(7 downto 0);
+    signal s_sum: unsigned(8 downto 0);
 begin
-
-
+    process(i_A, i_B, i_op) -- run process when these change
+    begin --set default values for signals
+        s_result <= (others => '0');
+        s_sum <= (others => '0');
+    
+    case i_op is
+        when "000" => --Add
+            s_sum <= ('0' & unsigned(i_A)) + ('0' & unsigned(i_B));
+            s_result <= std_logic_vector(unsigned(i_A) + unsigned(i_B));
+        when "001" => --Subtract
+            s_sum <= ('0' & unsigned(i_A)) - ('0' & unsigned(i_B));
+            s_result <= std_logic_vector(unsigned(i_A) - unsigned(i_B)); 
+        when "010" => --And
+            s_result <= i_A and i_B;
+        when "011" => --Or
+            s_result <= i_A or i_B;
+        when others =>
+            s_result <= (others => '0');
+     end case; 
+     end process;
+     
+     o_result <= s_result; --connect signals
+      
+     --Flags
+     o_flags(3) <= s_result(7); --N: negative
+     o_flags(2) <= '1' when s_result = "00000000" else '0'; --Z: zero
+     o_flags(1) <= s_sum(8); --C: carry
+     o_flags(0) <= '0'; --V: overflow 
+                   
 end Behavioral;
