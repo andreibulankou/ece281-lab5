@@ -47,7 +47,7 @@ begin
     begin --set default values for signals
         s_result <= (others => '0');
         s_sum <= (others => '0');
-    
+        o_flags <= "0000";
     case i_op is
         when "000" => --Add
             s_sum <= ('0' & unsigned(i_A)) + ('0' & unsigned(i_B));
@@ -69,9 +69,7 @@ begin
      --Flags
      o_flags(3) <= s_result(7); --N: negative
      o_flags(2) <= '1' when s_result = "00000000" else '0'; --Z: zero
-     o_flags(1) <= '1' when i_op = "000" and s_sum(8) = '1' else
-                   '1' when i_op = "001" and unsigned(i_A) < unsigned(i_B) else 
-                   '0';
+     o_flags(1) <= '0' when i_op = "001" else s_sum(8);
      o_flags(0) <= '0'; --V: overflow 
                    
 end Behavioral;
