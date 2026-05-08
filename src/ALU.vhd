@@ -66,12 +66,12 @@ begin
      o_result <= s_result; --connect signals
       
      --Flags
-     o_flags(3) <= s_result(7); --N: negative
-     o_flags(2) <= '1' when s_result = "00000000" else '0';
-     o_flags(1) <= '1' when i_op = "001" and unsigned(i_A) >= unsigned(i_B) else
-                    s_sum(8) when i_op = "000" else
+     o_flags(3) <= s_result(7); --N: negative bit 7 is sign bit
+     o_flags(2) <= '1' when s_result = "00000000" else '0'; -- If result is zero, set zero flag
+     o_flags(1) <= '1' when i_op = "001" and unsigned(i_A) >= unsigned(i_B) else --when i_A is greater than B
+                    s_sum(8) when i_op = "000" else  --No carry over
                     '0';
-     o_flags(0) <= '1' when i_op = "001" and i_A(7) /=  i_B(7) and s_result(7) /= i_A(7) else
+     o_flags(0) <= '1' when i_op = "001" and i_A(7) /=  i_B(7) and s_result(7) /= i_A(7) else   
                     '1' when i_op = "000" and i_A(7) = i_B(7) and s_result(7) /= i_A(7) else
                      '0'; --V: overflow 
                    
