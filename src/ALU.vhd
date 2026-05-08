@@ -41,13 +41,12 @@ end ALU;
 
 architecture Behavioral of ALU is
     signal s_result : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-    signal s_sum: unsigned(8 downto 0);
+    signal s_sum: unsigned(8 downto 0) := (others => '0');
 begin
     process(i_A, i_B, i_op) -- run process when these change
     begin --set default values for signals
         s_result <= (others => '0');
         s_sum <= (others => '0');
-        o_flags <= "0000";
     case i_op is
         when "000" => --Add
             s_sum <= ('0' & unsigned(i_A)) + ('0' & unsigned(i_B));
