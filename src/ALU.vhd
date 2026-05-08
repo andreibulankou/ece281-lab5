@@ -71,6 +71,8 @@ begin
      o_flags(1) <= '1' when i_op = "001" and unsigned(i_A) >= unsigned(i_B) else
                     s_sum(8) when i_op = "000" else
                     '0';
-     o_flags(0) <= '0'; --V: overflow 
+     o_flags(0) <= '1' when i_op = "001" and i_A(7) /=  i_B(7) and s_result(7) /= i_A(7) else
+                    '1' when i_op = "000" and i_A(7) = i_B(7) and s_result(7) /= i_A(7) else
+                     '0'; --V: overflow 
                    
 end Behavioral;
